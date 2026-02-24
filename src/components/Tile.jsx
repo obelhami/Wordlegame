@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 
-function Tile({ letter, color, delay = 0 }) {
+function Tile({ letter, color, delay = 0, theme = "dark" }) {
   const [flipped, setFlipped] = useState(false)
   const [displayColor, setDisplayColor] = useState("")
   const tileRef = useRef(null)
@@ -27,11 +27,13 @@ function Tile({ letter, color, delay = 0 }) {
     }
   }, [color])
 
-  let boxStyle = "border-1 border-gray-600 text-white"
+  let boxStyle = theme === "dark" 
+    ? "border-1 border-[#EEEEEE]/10 bg-[#393E46] text-white"
+    : "border-1 border-gray-300 bg-gray-50 text-gray-900"
 
   if (displayColor === "green")  boxStyle = "bg-green-500 border-green-500 text-white"
   if (displayColor === "yellow") boxStyle = "bg-yellow-400 border-yellow-400 text-white"
-  if (displayColor === "gray")   boxStyle = "bg-gray-500 border-gray-500 text-white"
+  if (displayColor === "gray")   boxStyle = "bg-gray-400 border-gray-500 text-white"
 
   return (
     <div

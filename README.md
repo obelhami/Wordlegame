@@ -4,7 +4,7 @@ A functional web-based clone of the popular word game **Wordle**, built with Rea
 
 ## 🎮 Live Demo
 
-[Click here to play!](https://your-vercel-link.vercel.app)
+[Click here to play!](https://wordlegame-f2ny.vercel.app/)
 
 ---
 
@@ -34,7 +34,7 @@ A functional web-based clone of the popular word game **Wordle**, built with Rea
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:obelhami/Wordlegame.git
+git clone git@github.com:obelhami/Wordlegame.git wordle-clone
 ```
 
 ### 2. Go into the project folder
@@ -84,13 +84,7 @@ src/
     Tile.jsx       → Single letter box
     Grid.jsx       → The 6x5 game board
     Keyboard.jsx   → On-screen keyboard
-  words.js         → Word list and random word picker
+  word.js         → Word list and random word picker
   App.jsx          → Main game logic and state
   index.css        → Global styles + Tailwind
 ```
-
----
-
-## 🙏 Acknowledgements
-
-Inspired by the original [Wordle](https://www.nytimes.com/games/wordle/index.html) game by Josh Wardle.

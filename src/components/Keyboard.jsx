@@ -4,7 +4,7 @@ const ROWS = [
   ["ENTER","Z","X","C","V","B","N","M","⌫"]
 ]
 
-function Keyboard({ onKey, guesses }) {
+function Keyboard({ onKey, guesses, theme = "dark" }) {
 
   const letterColors = {}
 
@@ -24,7 +24,9 @@ function Keyboard({ onKey, guesses }) {
           {row.map((key) => {
 
             const color = letterColors[key]
-            let keyStyle = " text-gray-400 border-1 border-gray-600 hover:text-gray-100 hover:border-gray-400 text-black"
+            let keyStyle = theme === "dark"
+              ? "text-gray-400 border-1 border-gray-600 hover:text-gray-100 hover:border-gray-400 bg-gray-700 hover:bg-gray-600"
+              : "text-gray-700 border-1 border-gray-300 hover:text-gray-900 hover:border-gray-500 bg-gray-100 hover:bg-gray-200"
 
             if (color === "green")  keyStyle = "bg-green-500 text-white"
             if (color === "yellow") keyStyle = "bg-yellow-400 text-white"

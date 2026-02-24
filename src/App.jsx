@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { getRandomWord } from './word'
+import { getRandomWord, isValidWord } from './word'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard' 
 
@@ -30,6 +30,11 @@ function checkGuess(guess, answer) {
 
 function App() {
 
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("wordle-theme")
+    return saved || "dark"
+  })
+
   const [answer] = useState(() => {
     const saved = localStorage.getItem("wordle-answer")
     if (saved) return saved
@@ -52,6 +57,8 @@ function App() {
     return "playing"
   })
 
+  const [error, setError] = useState("")
+
   useEffect(() => {
     localStorage.setItem("wordle-guesses", JSON.stringify(guesses))
   }, [guesses])
@@ -60,16 +67,31 @@ function App() {
     localStorage.setItem("wordle-status", gameStatus)
   }, [gameStatus])
 
+  useEffect(() => {
+    localStorage.setItem("wordle-theme", theme)
+  }, [theme])
+
   const handleKey = (key) => {
     if (gameStatus !== "playing") return
 
     if (key === "Enter" || key === "ENTER") {
-      if (currentGuess.length !== 5) return
+      if (currentGuess.length !== 5) {
+        setError("Word must be 5 letters")
+        setTimeout(() => setError(""), 2000)
+        return
+      }
+
+      if (!isValidWord(currentGuess)) {
+        setError("Not a valid word")
+        setTimeout(() => setError(""), 2000)
+        return
+      }
 
       const result = checkGuess(currentGuess, answer)
       const newGuesses = [...guesses, result]
       setGuesses(newGuesses)
       setCurrentGuess("")
+      setError("")
 
       if (currentGuess === answer) {
         setGameStatus("won")
@@ -101,26 +123,58 @@ function App() {
   }
 
   return (
-    <div className='w-full min-h-screen bg-[#252A34] flex flex-col items-center justify-center gap-4 lg:gap-6 joti'>
-      <div className="flex items-center gap-15">
-      <h1 className='text-gray-500 lg:text-[50px] text-[30px] font-bold'><span className='text-red-500'>W</span>o<span className='text-yellow-500'>r</span>d<span className='text-green-500'>l</span>e</h1>
-     <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30} viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-        strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
-         onClick={resetGame}
-         className="stroke-white hover:stroke-gray-300 hover:scale-105 transition duration-200 icon icon-tabler icons-tabler-outline icon-tabler-refresh">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-        </svg>
+    <div className={`w-full min-h-screen flex flex-col items-center justify-center gap-4 lg:gap-6 joti ${
+      theme === "dark" 
+        ? "bg-[#222831]" 
+        : "bg-[#EEEEEE]"
+    }`}>
+      <div className="flex items-center gap-15 relative w-full justify-center">
+        <h1 className={`lg:text-[50px] text-[30px] font-bold text-gray-400
+        }`}>
+          <span className='text-red-500'>W</span>o<span className='text-yellow-500'>r</span>d<span className='text-green-500'>l</span>e
+        </h1>
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className={`absolute right-4 lg:right-8 p-2 rounded-lg transition duration-200 ${
+            theme === "dark"
+              ? "bg-gray-700 hover:bg-gray-600 text-yellow-400"
+              : "bg-gray-300 hover:bg-gray-400 text-gray-800"
+          }`}
+          title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
+        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+          strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+           onClick={resetGame}
+           className={`cursor-pointer lg:w-[30px] lg:h-[30px] w-[24px] h-[24px] hover:scale-105 transition duration-200 icon icon-tabler icons-tabler-outline icon-tabler-refresh ${
+            theme === "dark" ? "stroke-gray-500 hover:stroke-gray-300" : "stroke-gray-700 hover:stroke-gray-900"
+           }`}>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+          </svg>
       </div>
 
       <Grid
         guesses={guesses}
         currentGuess={currentGuess}
+        theme={theme}
       />
+
+      {error && (
+        <div className={`text-center font-bold text-lg lg:text-xl px-4 py-2 rounded-lg transition-all duration-300 ${
+          theme === "dark"
+            ? "bg-red-900 text-red-200"
+            : "bg-red-200 text-red-900"
+        }`}>
+          {error}
+        </div>
+      )}
 
       <Keyboard
         onKey={handleKey}
         guesses={guesses}
+        theme={theme}
       />
 
       {gameStatus === "won" && (
@@ -140,13 +194,18 @@ function App() {
           </button>
         </div>
       )}
-      <div className='text-gray-100 text-sm mt-4 flex flex-col justify-center items-center p-4 lg:text-xl text-lg'>Instructions
-        <ul className='text-gray-200 text-sm mt-2 gap-1 flex flex-col justify-center items-start'>
-          <li>1. Guess the 5-letter word in 6 tries.</li>
-          <li>2. After each guess, the color of the tiles will change to show how close your guess was to the word.</li>
-          <li>3. <span className='text-green-500'>Green</span> means the letter is correct and in the right position.</li>
-          <li>4. <span className='text-yellow-500'>Yellow</span> means the letter is correct but in the wrong position.</li>
-          <li>5. <span className='text-gray-500'>Gray</span> means the letter is not in the word at all.</li>
+      <div className={`mt-4 flex flex-col justify-center items-center p-4 lg:text-xl text-lg ${
+        theme === "dark" ? "text-gray-100" : "text-gray-800"
+      }`}>
+        Instructions
+        <ul className={`text-sm mt-2 gap-1 flex flex-col justify-center items-start ${
+          theme === "dark" ? "text-gray-200" : "text-gray-700"
+        }`}>
+          <li><span className={`font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}>1.</span> Guess the 5-letter word in 6 tries.</li>
+          <li><span className={`font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}>2.</span> After each guess, the color of the tiles will change to show how close your guess was to the word.</li>
+          <li><span className={`font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}>3.</span> <span className='text-green-500'>Green</span> means the letter is correct and in the right position.</li>
+          <li><span className={`font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}>4.</span> <span className='text-yellow-500'>Yellow</span> means the letter is correct but in the wrong position.</li>
+          <li><span className={`font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-900"}`}>5.</span> <span className={theme === "dark" ? "text-gray-500" : "text-gray-600"}>Gray</span> means the letter is not in the word at all.</li>
         </ul>
       </div>
     </div>

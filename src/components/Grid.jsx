@@ -1,6 +1,6 @@
 import Tile from "./Tile"
 
-function Grid({ guesses, currentGuess, answer }) {
+function Grid({ guesses, currentGuess, answer, theme }) {
 
   const rows = []
 
@@ -25,6 +25,7 @@ function Grid({ guesses, currentGuess, answer }) {
               key={colIndex}
               letter={letter}
               color={row.colors[colIndex]}
+              theme={theme}
             />
           ))}
         </div>
