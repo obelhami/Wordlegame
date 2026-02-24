@@ -27,7 +27,7 @@ function Tile({ letter, color, delay = 0 }) {
     }
   }, [color])
 
-  let boxStyle = "border-2 border-gray-400 text-white"
+  let boxStyle = "border-1 border-gray-600 text-white"
 
   if (displayColor === "green")  boxStyle = "bg-green-500 border-green-500 text-white"
   if (displayColor === "yellow") boxStyle = "bg-yellow-400 border-yellow-400 text-white"

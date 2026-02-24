@@ -24,7 +24,7 @@ function Keyboard({ onKey, guesses }) {
           {row.map((key) => {
 
             const color = letterColors[key]
-            let keyStyle = "bg-gray-300 text-black"
+            let keyStyle = " text-gray-400 border-1 border-gray-600 hover:text-gray-100 hover:border-gray-400 text-black"
 
             if (color === "green")  keyStyle = "bg-green-500 text-white"
             if (color === "yellow") keyStyle = "bg-yellow-400 text-white"
@@ -37,11 +37,14 @@ function Keyboard({ onKey, guesses }) {
                 key={key}
                 onClick={() => onKey(key)}
                 className={`
-                  ${isWide ? "lg:px-3 px-2 text-xs" : "lg:w-14 w-8"} 
+                  ${isWide ? "lg:px-5 px-2 text-xs" : "lg:w-14 w-8"} 
                   lg:h-14 h-9 rounded font-bold text-sm
                   ${keyStyle}
+                  hover:bg-opacity-90
+                  hover:scale-105
+                  active:scale-100
                   active:opacity-70
-                  transition-colors duration-300
+                  transition duration-200
                 `}
               >
                 {key}
