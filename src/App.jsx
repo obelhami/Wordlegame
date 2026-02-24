@@ -76,14 +76,12 @@ function App() {
 
     if (key === "Enter" || key === "ENTER") {
       if (currentGuess.length !== 5) {
-        setError("Word must be 5 letters")
-        setTimeout(() => setError(""), 2000)
         return
       }
 
       if (!isValidWord(currentGuess)) {
         setError("Not a valid word")
-        setTimeout(() => setError(""), 2000)
+        setTimeout(() => setError(""), 3000)
         return
       }
 
@@ -162,7 +160,7 @@ function App() {
       />
 
       {error && (
-        <div className={`text-center font-bold text-lg lg:text-xl px-4 py-2 rounded-lg transition-all duration-300 ${
+        <div className={`text-center font-bold text-lg lg:text-xl px-4 py-2 rounded-lg transition-all duration-300 absolute lg:w-[400px] w-[200px] lg:h-[80px] top-10 right-10 flex items-center justify-center ${
           theme === "dark"
             ? "bg-red-900 text-red-200"
             : "bg-red-200 text-red-900"

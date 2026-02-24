@@ -7,7 +7,6 @@ function Grid({ guesses, currentGuess, answer, theme }) {
   for (let i = 0; i < 6; i++) {
     if (i < guesses.length) {
       rows.push(guesses[i])
-      console.log(guesses[i])
     } else if (i === guesses.length) {
       const currentRow = currentGuess.split("").concat(Array(5).fill(""))
       rows.push({ letters: currentRow.slice(0, 5), colors: Array(5).fill("") })
