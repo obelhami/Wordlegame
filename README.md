@@ -1,16 +1,96 @@
-# React + Vite
+# Woordle 🟩
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A functional web-based clone of the popular word game **Wordle**, built with React and Tailwind CSS.
 
-Currently, two official plugins are available:
+## 🎮 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Click here to play!](https://your-vercel-link.vercel.app)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📖 How To Play
 
-## Expanding the ESLint configuration
+- Guess the secret **5-letter word** in **6 tries or less**
+- After each guess, the tiles will change color to give you hints:
+  - 🟩 **Green** — Letter is correct and in the right position
+  - 🟨 **Yellow** — Letter exists in the word but in the wrong position
+  - ⬛ **Gray** — Letter does not exist in the word
+- Type using your **physical keyboard**
+- Press **Enter** to submit your guess
+- Press **Backspace** to delete a letter
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ⚙️ Built With
+
+- [React](https://react.dev/) — UI Framework
+- [Vite](https://vitejs.dev/) — Project setup and bundler
+- [Tailwind CSS](https://tailwindcss.com/) — Styling
+
+---
+
+## 🚀 Installation & Running Locally
+
+### 1. Clone the repository
+
+```bash
+git clone git@github.com:obelhami/Wordlegame.git
+```
+
+### 2. Go into the project folder
+
+```bash
+cd wordle-clone
+```
+
+### 3. Install dependencies
+
+```bash
+npm install
+```
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
+
+### 5. Open your browser and go to
+
+```
+http://localhost:5173
+```
+
+---
+
+## ✨ Features
+
+- ✅ 5x6 Game Grid
+- ✅ Green / Yellow / Gray color logic
+- ✅ Physical keyboard support
+- ✅ Win & Game Over messages
+- ✅ Play Again button
+- ✅ Pop animation when typing letters
+- ✅ Game state saved with localStorage (refresh and continue!)
+- ✅ Fully responsive on mobile and desktop
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+  components/
+    Tile.jsx       → Single letter box
+    Grid.jsx       → The 6x5 game board
+    Keyboard.jsx   → On-screen keyboard
+  words.js         → Word list and random word picker
+  App.jsx          → Main game logic and state
+  index.css        → Global styles + Tailwind
+```
+
+---
+
+## 🙏 Acknowledgements
+
+Inspired by the original [Wordle](https://www.nytimes.com/games/wordle/index.html) game by Josh Wardle.
